@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ntc-showcase — Architektur-Diagramm</title>
+<style>
+  :root { color-scheme: dark; }
+  html, body {
+    margin: 0; padding: 0;
+    background: #0d1117;
+    color: #c9d1d9;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 24px 16px 48px; }
+  h1 { font-size: 20px; font-weight: 600; margin: 0 0 4px; }
+  p.lead { margin: 0 0 20px; color: #8b949e; font-size: 14px; }
+  svg { width: 100%; height: auto; display: block; }
+  .foot { margin-top: 16px; color: #8b949e; font-size: 12.5px; line-height: 1.6; }
+  code { background:#161b22; border:1px solid #30363d; border-radius:4px; padding:1px 5px; color:#c9d1d9; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>ntc-showcase — NARA-inspirierte Landing Zone</h1>
+  <p class="lead">Core Accounts · Transit-Gateway-Hub mit segmentierten Route Tables · RAM-Share an die Workloads-OU.
+     Grün = implementiert · Amber (gestrichelt) = README-Stub.</p>
+  <p style="margin:0 0 20px;font-size:13px;">Neu beim Thema Landing Zone? →
+     <a href="landing-zone-erklaert.html" style="color:#58a6ff;text-decoration:none;">einfache, einsteigerfreundliche Erklärung</a></p>
+
+  <svg viewBox="0 0 1120 820" role="img" aria-label="Architektur-Diagramm der ntc-showcase Landing Zone">
+    <defs>
+      <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-end">
+        <path d="M0,0 L10,5 L0,10 z" fill="#58a6ff"/>
+      </marker>
+      <marker id="arrowsolid" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-end">
+        <path d="M0,0 L10,5 L0,10 z" fill="#6e7681"/>
+      </marker>
+    </defs>
+
+    <style>
+      .box   { fill:#161b22; stroke:#30363d; stroke-width:1.5; rx:10; }
+      .impl  { stroke:#3fb950; }
+      .stubB { stroke:#d29922; stroke-dasharray:5 4; }
+      .acct-t{ fill:#e6edf3; font-size:15px; font-weight:600; }
+      .sub   { fill:#8b949e; font-size:11.5px; }
+      .mod   { fill:#c9d1d9; font-size:12.5px; }
+      .pill-t{ fill:#e6edf3; font-size:13px; font-weight:600; text-anchor:middle; }
+      .ram   { stroke:#58a6ff; stroke-width:2; stroke-dasharray:7 5; fill:none; }
+      .attach{ stroke:#6e7681; stroke-width:1.6; fill:none; }
+      .lbl   { fill:#58a6ff; font-size:11.5px; }
+    </style>
+
+    <!-- ============ LEFT COLUMN: governance / security / logging ============ -->
+
+    <!-- Org Management -->
+    <rect class="box" x="40" y="100" width="300" height="160" rx="10"/>
+    <text class="acct-t" x="58" y="126">Org Management (Payer)</text>
+    <circle cx="64" cy="150" r="4" fill="#3fb950"/><text class="mod" x="76" y="154">organizations · IMPL</text>
+    <circle cx="64" cy="172" r="4" fill="#3fb950"/><text class="mod" x="76" y="176">account-factory · IMPL ✱</text>
+    <circle cx="64" cy="194" r="4" fill="#d29922"/><text class="mod" x="76" y="198">guardrails · STUB</text>
+    <circle cx="64" cy="216" r="4" fill="#d29922"/><text class="mod" x="76" y="220">identity-center · STUB</text>
+    <circle cx="64" cy="238" r="4" fill="#d29922"/><text class="mod" x="76" y="242">parameters · STUB</text>
+
+    <!-- Security Tooling / Audit -->
+    <rect class="box" x="40" y="280" width="300" height="110" rx="10"/>
+    <text class="acct-t" x="58" y="306">Security Tooling / Audit</text>
+    <text class="sub" x="58" y="324">delegierter Admin</text>
+    <circle cx="64" cy="346" r="4" fill="#d29922"/><text class="mod" x="76" y="350">security-tooling · STUB</text>
+    <circle cx="64" cy="368" r="4" fill="#d29922"/><text class="mod" x="76" y="372">guardrails (detective) · STUB</text>
+
+    <!-- Log Archive -->
+    <rect class="box" x="40" y="410" width="300" height="90" rx="10"/>
+    <text class="acct-t" x="58" y="436">Log Archive</text>
+    <text class="sub" x="58" y="454">write-once (WORM), Security-OU</text>
+    <circle cx="64" cy="476" r="4" fill="#d29922"/><text class="mod" x="76" y="480">log-archive · STUB</text>
+
+    <!-- On-Prem -->
+    <rect class="box" x="40" y="540" width="300" height="110" rx="10"/>
+    <text class="acct-t" x="58" y="566">On-Prem / Rechenzentrum</text>
+    <text class="sub" x="58" y="586">VPN / Direct Connect</text>
+    <text class="sub" x="58" y="606">BGP · vpn_ecmp_support = enable</text>
+    <text class="lbl" x="58" y="628">→ onprem Route Table</text>
+
+    <!-- ============ CONNECTIVITY / NETWORK ACCOUNT ============ -->
+    <rect class="box impl" x="420" y="100" width="660" height="320" rx="10"/>
+    <text class="acct-t" x="440" y="128">Connectivity / Network Account</text>
+    <text class="sub" x="440" y="148">core-network · IMPL   |   ipam · STUB   |   route53 · STUB</text>
+
+    <!-- TGW hub -->
+    <rect class="box impl" x="450" y="170" width="600" height="220" rx="10"/>
+    <text class="acct-t" x="468" y="200">Transit Gateway — zentraler Hub  ·  core-network</text>
+    <text class="sub" x="468" y="222">default association/propagation = disable   ·   auto_accept_shared_attachments = enable</text>
+
+    <!-- Route table pills -->
+    <rect x="480" y="246" width="120" height="46" rx="8" fill="#0d1117" stroke="#3fb950" stroke-width="1.5"/>
+    <text class="pill-t" x="540" y="274">onprem</text>
+    <rect x="620" y="246" width="120" height="46" rx="8" fill="#0d1117" stroke="#3fb950" stroke-width="1.5"/>
+    <text class="pill-t" x="680" y="274">hub</text>
+    <rect x="760" y="246" width="120" height="46" rx="8" fill="#0d1117" stroke="#3fb950" stroke-width="1.5"/>
+    <text class="pill-t" x="820" y="274">spoke-prod</text>
+    <rect x="900" y="246" width="120" height="46" rx="8" fill="#0d1117" stroke="#3fb950" stroke-width="1.5"/>
+    <text class="pill-t" x="960" y="274">spoke-dev</text>
+
+    <text class="sub" x="468" y="328">Route Tables = Segmente. Isolation rein über Routing (keine SG/NACL).</text>
+    <text class="sub" x="468" y="348">hub ↔ spoke-prod ✔ · hub ↔ spoke-dev ✔ · spoke-prod ↔ spoke-dev ✘ (keine Route → kein Ost-West)</text>
+    <text class="sub" x="468" y="368">association = wohin darf ein Attachment? (1 RT)   ·   propagation = wer erreicht es? (n RTs)</text>
+
+    <!-- ============ WORKLOADS OU ============ -->
+    <rect class="box" x="420" y="540" width="660" height="220" rx="10"/>
+    <text class="acct-t" x="440" y="566">Workloads-OU  —  RAM-Principal</text>
+    <text class="sub" x="440" y="586">allow_external_principals = false · neue Accounts erben den TGW-Share automatisch (kein Re-Share)</text>
+
+    <!-- prod spoke -->
+    <rect class="box stubB" x="445" y="610" width="290" height="120" rx="10"/>
+    <text class="acct-t" x="463" y="636">prod-app — Spoke VPC</text>
+    <text class="sub" x="463" y="656">Modul: vpc (STUB) · CIDR aus ipam (STUB)</text>
+    <text class="lbl" x="463" y="680">assoc: spoke-prod</text>
+    <text class="lbl" x="463" y="700">propagate → hub</text>
+
+    <!-- dev spoke -->
+    <rect class="box stubB" x="765" y="610" width="290" height="120" rx="10"/>
+    <text class="acct-t" x="783" y="636">dev-app — Spoke VPC</text>
+    <text class="sub" x="783" y="656">Modul: vpc (STUB) · CIDR aus ipam (STUB)</text>
+    <text class="lbl" x="783" y="680">assoc: spoke-dev</text>
+    <text class="lbl" x="783" y="700">propagate → hub</text>
+
+    <!-- ============ CONNECTIONS ============ -->
+    <!-- RAM share: connectivity -> OU -->
+    <path class="ram" d="M720,420 L720,540" marker-end="url(#arrow)"/>
+    <rect x="735" y="462" width="172" height="36" rx="6" fill="#0d1117" stroke="#30363d"/>
+    <text class="lbl" x="745" y="479">RAM Resource Share</text>
+    <text class="lbl" x="745" y="494">→ Workloads-OU</text>
+
+    <!-- attachments: spokes -> RT pills -->
+    <path class="attach" d="M590,610 C590,520 820,420 820,294" marker-end="url(#arrowsolid)"/>
+    <path class="attach" d="M910,610 C910,500 960,420 960,294" marker-end="url(#arrowsolid)"/>
+
+    <!-- on-prem -> onprem RT -->
+    <path class="attach" d="M250,540 C300,420 470,360 535,294" marker-end="url(#arrowsolid)"/>
+
+    <!-- ============ LEGEND ============ -->
+    <circle cx="52" cy="788" r="5" fill="#3fb950"/>
+    <text class="sub" x="64" y="792">IMPLEMENTIERT (core-network: fmt + validate clean)</text>
+    <circle cx="420" cy="788" r="5" fill="#d29922"/>
+    <text class="sub" x="432" y="792">STUB (nur README)</text>
+    <line x1="612" y1="788" x2="652" y2="788" class="ram"/>
+    <text class="sub" x="660" y="792">RAM-Share</text>
+    <line x1="772" y1="788" x2="812" y2="788" class="attach" marker-end="url(#arrowsolid)"/>
+    <text class="sub" x="820" y="792">Attachment + Association</text>
+  </svg>
+
+  <p class="foot">
+    ✱ <code>account-factory</code>: Ressourcenlogik ist implementiert, das Modul ist aber an den
+    Root-Kontext gekoppelt (nutzt <code>data.aws_partition</code> / <code>data.aws_caller_identity</code>
+    aus dem Root-Modul) und besteht <code>terraform validate</code> daher nicht isoliert.<br>
+    Showcase / Interview-Vorbereitung — kein <code>apply</code>, kein Deploy. Details:
+    <code>docs/ARCHITECTURE.md</code> · <code>docs/DECISIONS.md</code>.
+  </p>
+</div>
+</body>
+</html>

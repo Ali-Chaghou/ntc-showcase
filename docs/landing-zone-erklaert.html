@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ntc-showcase — Landing Zone einfach erklärt</title>
+<style>
+  :root { color-scheme: dark; }
+  html, body {
+    margin: 0; padding: 0;
+    background: #0d1117;
+    color: #c9d1d9;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 24px 16px 48px; }
+  h1 { font-size: 20px; font-weight: 600; margin: 0 0 4px; }
+  p.lead { margin: 0 0 8px; color: #8b949e; font-size: 14px; }
+  p.note { margin: 0 0 20px; font-size: 13px; }
+  p.note a, .foot a { color: #58a6ff; text-decoration: none; }
+  p.note a:hover, .foot a:hover { text-decoration: underline; }
+  svg { width: 100%; height: auto; display: block; }
+  .foot { margin-top: 16px; color: #8b949e; font-size: 13px; line-height: 1.6; }
+  code { background:#161b22; border:1px solid #30363d; border-radius:4px; padding:1px 5px; color:#c9d1d9; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Landing Zone — einfach erklärt</h1>
+  <p class="lead">Was ist eine NARA-artige AWS Landing Zone, wenn man den Begriff zum ersten Mal hört?
+     Von oben nach unten als Geschichte lesbar.</p>
+  <p class="note">Schon vertraut? → <a href="architecture-diagram.html">zum technischen Diagramm</a></p>
+
+  <svg viewBox="0 0 1120 660" role="img" aria-label="Einsteigerfreundliche Erklärung einer Landing Zone">
+    <defs>
+      <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-end">
+        <path d="M0,0 L10,5 L0,10 z" fill="#8b949e"/>
+      </marker>
+    </defs>
+
+    <style>
+      .org-t  { fill:#e6edf3; font-size:17px; font-weight:600; }
+      .org-s  { fill:#8b949e; font-size:13px; }
+      .core   { fill:#161b22; stroke:#58a6ff; stroke-width:1.6; }
+      .work   { fill:#161b22; stroke:#3fb950; stroke-width:1.6; }
+      .ic      { fill:none; stroke-width:1.8; }
+      .ic-c    { stroke:#58a6ff; }
+      .ic-w    { stroke:#3fb950; }
+      .name   { fill:#e6edf3; font-size:16px; font-weight:600; text-anchor:middle; }
+      .term   { fill:#58a6ff; font-size:12.5px; text-anchor:middle; }
+      .term-w { fill:#3fb950; font-size:12.5px; text-anchor:middle; }
+      .desc   { fill:#c9d1d9; font-size:12px; text-anchor:middle; }
+      .tag    { fill:#8b949e; font-size:11.5px; text-anchor:middle; }
+      .flow   { stroke:#8b949e; stroke-width:1.6; fill:none; stroke-dasharray:6 4; }
+      .flow-t { fill:#8b949e; font-size:11.5px; }
+      .leg    { fill:#8b949e; font-size:12.5px; }
+    </style>
+
+    <!-- ============ OUTER CONTAINER: AWS Organization ============ -->
+    <rect x="30" y="70" width="1060" height="500" rx="14" fill="#0d1117" stroke="#30363d" stroke-width="1.6"/>
+    <text class="org-t" x="52" y="100">AWS Organization</text>
+    <text class="org-s" x="200" y="100">= das Unternehmen in der Cloud (alle Accounts unter einem Dach)</text>
+
+    <!-- ============ 4 NARA CORE ACCOUNTS ============ -->
+
+    <!-- Verwaltung · Org Management -->
+    <rect class="core" x="60" y="130" width="232" height="200" rx="10"/>
+    <!-- icon: clipboard -->
+    <rect class="ic ic-c" x="160" y="150" width="32" height="38" rx="4"/>
+    <rect x="169" y="145" width="14" height="8" rx="2" fill="#58a6ff"/>
+    <line class="ic ic-c" x1="166" y1="164" x2="186" y2="164"/>
+    <line class="ic ic-c" x1="166" y1="172" x2="186" y2="172"/>
+    <line class="ic ic-c" x1="166" y1="180" x2="182" y2="180"/>
+    <text class="name" x="176" y="214">Verwaltung</text>
+    <text class="term" x="176" y="232">Org Management</text>
+    <text class="desc" x="176" y="256">Erstellt Accounts,</text>
+    <text class="desc" x="176" y="272">setzt Leitplanken (SCPs)</text>
+    <text class="tag"  x="176" y="312">organizations · account-factory</text>
+
+    <!-- Archiv · Log Archive -->
+    <rect class="core" x="316" y="130" width="232" height="200" rx="10"/>
+    <!-- icon: archive box -->
+    <rect class="ic ic-c" x="414" y="150" width="36" height="10" rx="2"/>
+    <rect class="ic ic-c" x="417" y="160" width="30" height="28" rx="2"/>
+    <rect x="426" y="167" width="12" height="4" rx="1" fill="#58a6ff"/>
+    <text class="name" x="432" y="214">Archiv</text>
+    <text class="term" x="432" y="232">Log Archive</text>
+    <text class="desc" x="432" y="256">Speichert Logs</text>
+    <text class="desc" x="432" y="272">unveränderbar (WORM)</text>
+    <text class="tag"  x="432" y="312">log-archive (Stub)</text>
+
+    <!-- Wachdienst · Security Tooling -->
+    <rect class="core" x="572" y="130" width="232" height="200" rx="10"/>
+    <!-- icon: eye -->
+    <ellipse class="ic ic-c" cx="688" cy="168" rx="22" ry="13"/>
+    <circle class="ic ic-c" cx="688" cy="168" r="6"/>
+    <circle cx="688" cy="168" r="2.6" fill="#58a6ff"/>
+    <text class="name" x="688" y="214">Wachdienst</text>
+    <text class="term" x="688" y="232">Security Tooling</text>
+    <text class="desc" x="688" y="256">Überwacht alle Accounts</text>
+    <text class="desc" x="688" y="272">(GuardDuty, Security Hub)</text>
+    <text class="tag"  x="688" y="312">security-tooling (Stub)</text>
+
+    <!-- Netzwerk · Connectivity -->
+    <rect class="core" x="828" y="130" width="232" height="200" rx="10"/>
+    <!-- icon: hub -->
+    <line class="ic ic-c" x1="944" y1="168" x2="924" y2="168"/>
+    <line class="ic ic-c" x1="944" y1="168" x2="964" y2="168"/>
+    <line class="ic ic-c" x1="944" y1="168" x2="944" y2="152"/>
+    <line class="ic ic-c" x1="944" y1="168" x2="944" y2="184"/>
+    <circle cx="944" cy="168" r="7" fill="#58a6ff"/>
+    <circle class="ic ic-c" cx="922" cy="168" r="4" fill="#0d1117"/>
+    <circle class="ic ic-c" cx="966" cy="168" r="4" fill="#0d1117"/>
+    <circle class="ic ic-c" cx="944" cy="150" r="4" fill="#0d1117"/>
+    <circle class="ic ic-c" cx="944" cy="186" r="4" fill="#0d1117"/>
+    <text class="name" x="944" y="214">Netzwerk</text>
+    <text class="term" x="944" y="232">Connectivity</text>
+    <text class="desc" x="944" y="256">Zentraler Hub, verbindet</text>
+    <text class="desc" x="944" y="272">alle Accounts (TGW)</text>
+    <text class="tag"  x="944" y="312">core-network</text>
+
+    <!-- ============ WORKLOADS ============ -->
+    <text class="org-t" x="52" y="370" font-size="15">Arbeits-Accounts (Workloads)</text>
+    <text class="org-s" x="320" y="370">— hier laufen die eigentlichen Anwendungen</text>
+
+    <!-- prod -->
+    <rect class="work" x="182" y="392" width="232" height="150" rx="10"/>
+    <rect class="ic ic-w" x="282" y="412" width="32" height="22" rx="3"/>
+    <line class="ic ic-w" x1="298" y1="434" x2="298" y2="440"/>
+    <line class="ic ic-w" x1="290" y1="441" x2="306" y2="441"/>
+    <text class="name" x="298" y="468">prod</text>
+    <text class="term-w" x="298" y="486">Workload-Account</text>
+    <text class="desc" x="298" y="510">Produktiv-Anwendungen</text>
+
+    <!-- staging -->
+    <rect class="work" x="444" y="392" width="232" height="150" rx="10"/>
+    <rect class="ic ic-w" x="544" y="412" width="32" height="22" rx="3"/>
+    <line class="ic ic-w" x1="560" y1="434" x2="560" y2="440"/>
+    <line class="ic ic-w" x1="552" y1="441" x2="568" y2="441"/>
+    <text class="name" x="560" y="468">staging</text>
+    <text class="term-w" x="560" y="486">Workload-Account</text>
+    <text class="desc" x="560" y="510">Test vor Produktiv</text>
+
+    <!-- dev -->
+    <rect class="work" x="706" y="392" width="232" height="150" rx="10"/>
+    <rect class="ic ic-w" x="806" y="412" width="32" height="22" rx="3"/>
+    <line class="ic ic-w" x1="822" y1="434" x2="822" y2="440"/>
+    <line class="ic ic-w" x1="814" y1="441" x2="830" y2="441"/>
+    <text class="name" x="822" y="468">dev</text>
+    <text class="term-w" x="822" y="486">Workload-Account</text>
+    <text class="desc" x="822" y="510">Entwicklung</text>
+
+    <!-- ============ FLOWS (core -> workloads) ============ -->
+    <!-- Account Factory: Verwaltung -> prod -->
+    <path class="flow" d="M176,330 C176,360 240,366 270,392" marker-end="url(#arr)"/>
+    <text class="flow-t" x="70" y="356">Account Factory legt</text>
+    <text class="flow-t" x="70" y="370">neue Accounts an</text>
+
+    <!-- TGW-Hub: Netzwerk -> dev -->
+    <path class="flow" d="M944,330 C944,360 870,366 842,392" marker-end="url(#arr)"/>
+    <text class="flow-t" x="958" y="356">verbunden über</text>
+    <text class="flow-t" x="958" y="370">den TGW-Hub</text>
+
+    <!-- ============ LEGEND ============ -->
+    <rect x="40" y="612" width="22" height="15" rx="3" class="core"/>
+    <text class="leg" x="70" y="624">Verwaltungs-Account (NARA Core Account)</text>
+    <rect x="420" y="612" width="22" height="15" rx="3" class="work"/>
+    <text class="leg" x="450" y="624">Arbeits-Account (Workload — hier laufen Apps)</text>
+  </svg>
+
+  <p class="foot">
+    Die Brücke zum technischen Diagramm: Die Arbeits-Accounts hängen über den
+    <strong>TGW-Hub</strong> im Netzwerk-Account zusammen, und neue Accounts entstehen über die
+    <strong>Account Factory</strong> im Verwaltungs-Account — wie das im Detail verdrahtet ist,
+    zeigt das <a href="architecture-diagram.html">technische Diagramm</a>.<br>
+    Namen folgen der Konvention <code>ntc-&lt;domain&gt;-&lt;component&gt;</code> (z.&nbsp;B.
+    <code>ntc-core-network</code>); die Modulnamen entsprechen den Ordnern unter <code>modules/</code>.
+    „Stub" = bewusst noch nicht implementiert (nur README). Showcase / Interview-Vorbereitung —
+    kein <code>apply</code>, kein Deploy.
+  </p>
+</div>
+</body>
+</html>
